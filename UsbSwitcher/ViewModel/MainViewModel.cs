@@ -8,6 +8,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using UsbSwitcher.Core;
 using System.ServiceProcess;
+using System.Management;
 
 namespace UsbSwitcher.ViewModel
 {
@@ -99,10 +100,8 @@ namespace UsbSwitcher.ViewModel
         {
             var state = await Task.Run(() =>
             {
-                var sw = Stopwatch.StartNew();
                 var res = new Status();
                 res.Initialize();
-                var a = sw.Elapsed.TotalMilliseconds;
                 return res;
             });
 
@@ -112,6 +111,7 @@ namespace UsbSwitcher.ViewModel
             CanTest = state.CanTest;
             IsRunningOn30 = state.IsRunningOn30;
             ServiceRunning = state.ServiceRunning;
+            ServiceEnabled = state.ServiceEnabled;
         }
 
         private class Status
@@ -126,6 +126,7 @@ namespace UsbSwitcher.ViewModel
 
             public bool? IsRunningOn30 { get; private set; }
             public bool? ServiceRunning { get; private set; }
+            public bool ServiceEnabled { get; private set; }
 
             
             internal void Initialize()
@@ -146,9 +147,23 @@ namespace UsbSwitcher.ViewModel
 
                 var service = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == _serviceName);
 
-                if(service == null) return;
+                if (service != null)
+                {
+                    ServiceRunning = service.Status == ServiceControllerStatus.Running;
+                }
 
-                ServiceRunning = service.Status == ServiceControllerStatus.Running;
+                ServiceEnabled = CheckServiceEnabled(_serviceName);
+            }
+
+            private bool CheckServiceEnabled(string serviceName)
+            {
+                var querySearch = new ManagementObjectSearcher($"SELECT StartMode FROM Win32_Service WHERE Name = '{serviceName}'");
+
+                var service = querySearch.Get().Cast<ManagementBaseObject>().FirstOrDefault();
+
+                if (service == null) return false;
+
+                return service.GetPropertyValue("StartMode").ToString() == "Automatic";
             }
         }
     }

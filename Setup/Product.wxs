@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
 	<Product Id="*" Name="Setup" Language="1033" Version="1.0.0.0" Manufacturer="Alexander Vostres" UpgradeCode="34de14c7-2f68-41a2-a955-1fe7aecfbd1a">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
@@ -13,6 +13,11 @@
 	</Product>
 
 	<Fragment>
+    <PropertyRef Id="WIX_IS_NETFRAMEWORK_45_OR_LATER_INSTALLED"/>
+	  <Condition Message="This application requires .NET Framework 4.5. Please install the .NET Framework then run this installer again.">
+	    <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_45_OR_LATER_INSTALLED]]>
+	  </Condition>
+    
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
 				<Directory Id="INSTALLFOLDER" Name="Setup" />

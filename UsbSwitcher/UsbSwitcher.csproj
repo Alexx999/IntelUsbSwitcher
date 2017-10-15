@@ -63,6 +63,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Management" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -88,6 +89,7 @@
     </ApplicationDefinition>
     <Compile Include="Converter\BoolToServiceStateConverter.cs" />
     <Compile Include="Converter\BoolToUsbVersionConverter.cs" />
+    <Compile Include="Converter\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="Converter\SupportStateToColorConverter.cs" />
     <Compile Include="Converter\SupportStateToDescriptionConverter.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
