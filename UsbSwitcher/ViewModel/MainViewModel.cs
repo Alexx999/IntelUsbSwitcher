@@ -101,6 +101,11 @@ namespace UsbSwitcher.ViewModel
 
             await Task.Run(() => SetServiceEnabled(_serviceName, true));
             ServiceEnabled = await Task.Run(() => GetServiceEnabled(_serviceName));
+
+            if (ServiceEnabled)
+            {
+                StartService();
+            }
         }
 
         private async Task DisableService()
@@ -124,6 +129,7 @@ namespace UsbSwitcher.ViewModel
             
             var service = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == _serviceName);
             service?.Start();
+            service?.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(30));
 
             if (service != null)
             {
@@ -135,6 +141,7 @@ namespace UsbSwitcher.ViewModel
         {
             var service = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == _serviceName);
             service?.Stop();
+            service?.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(30));
 
             if (service != null)
             {
@@ -180,7 +187,7 @@ namespace UsbSwitcher.ViewModel
 
                 if (service == null) return false;
 
-                return service.GetPropertyValue("StartMode").ToString() == "Automatic";
+                return service.GetPropertyValue("StartMode").ToString().StartsWith("Auto");
             }
         }
 

@@ -57,6 +57,9 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <TextBlock Text="{Binding ServiceEnabled}" />
             </StackPanel>
+            <StackPanel Orientation="Vertical" Visibility="{Binding ServiceRunning, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                <Button Content="Start service" Command="{Binding StartServiceCommand}" Visibility="{Binding ServiceEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </StackPanel>
             <StackPanel Orientation="Vertical">
                 <Button Content="Stop service" Command="{Binding StopServiceCommand}" Visibility="{Binding ServiceRunning, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <Button Content="Disable service" Command="{Binding DisableServiceCommand}" Visibility="{Binding ServiceEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>

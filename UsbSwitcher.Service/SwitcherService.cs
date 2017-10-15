@@ -24,9 +24,11 @@ namespace UsbSwitcher.Service
 
         protected override void OnStop()
         {
-            if (!_applied) return;
-
-            IntelXhci.SetRouting(_initialValue);
+            if (_applied)
+            {
+                IntelXhci.SetRouting(_initialValue);
+            }
+            DirectIo.Shutdown();
         }
     }
 }
