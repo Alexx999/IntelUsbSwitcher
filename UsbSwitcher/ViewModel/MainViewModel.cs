@@ -16,6 +16,29 @@ namespace UsbSwitcher.ViewModel
     {
         private static string _serviceName = "Intel USB Switcher Service";
 
+        public SupportState BasicSupportState { get; set; }
+
+        public SupportState EhciControllersState { get; set; }
+
+        public int SwitchablePorts { get; set; }
+
+        public bool? IsRunningOn30 { get; set; }
+        public bool CanTest { get; set; }
+        public bool TestRunning { get; set; }
+        public bool TestSuccess { get; set; }
+        public int TestCountdown { get; set; }
+
+        public bool ServiceEnabled { get; set; }
+
+        public bool? ServiceRunning { get; set; }
+
+        public ICommand TestCommand { get; }
+        public ICommand FinishTestCommand { get; }
+        public ICommand EnableServiceCommand { get; }
+        public ICommand DisableServiceCommand { get; }
+        public ICommand StartServiceCommand { get; }
+        public ICommand StopServiceCommand { get; }
+
         public MainViewModel()
         {
             if (IsInDesignMode) return;
@@ -24,6 +47,10 @@ namespace UsbSwitcher.ViewModel
 
             TestCommand = new RelayCommand(async () => await StartTest());
             FinishTestCommand = new RelayCommand(EndTestSuccess);
+            EnableServiceCommand = new RelayCommand(async () => await EnableService());
+            DisableServiceCommand = new RelayCommand(async () => await DisableService());
+            StartServiceCommand = new RelayCommand(StartService);
+            StopServiceCommand = new RelayCommand(StopService);
         }
 
         private async Task StartTest()
@@ -63,6 +90,57 @@ namespace UsbSwitcher.ViewModel
             MessageBox.Show("Button not clicked in time - assuming that it didn't work well");
         }
 
+        private async Task EnableService()
+        {
+            if (ServiceRunning == null)
+            {
+                MessageBox.Show("Service not installed");
+                return;
+            }
+
+            await Task.Run(() => SetServiceEnabled(_serviceName, true));
+            ServiceEnabled = await Task.Run(() => GetServiceEnabled(_serviceName));
+        }
+
+        private async Task DisableService()
+        {
+            if (!ServiceEnabled)
+            {
+                return;
+            }
+
+            await Task.Run(() => SetServiceEnabled(_serviceName, false));
+            ServiceEnabled = await Task.Run(() => GetServiceEnabled(_serviceName));
+        }
+
+        private void StartService()
+        {
+            if (ServiceRunning == null)
+            {
+                MessageBox.Show("Service not installed");
+                return;
+            }
+            
+            var service = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == _serviceName);
+            service?.Start();
+
+            if (service != null)
+            {
+                ServiceRunning = service.Status == ServiceControllerStatus.Running;
+            }
+        }
+
+        private void StopService()
+        {
+            var service = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == _serviceName);
+            service?.Stop();
+
+            if (service != null)
+            {
+                ServiceRunning = service.Status == ServiceControllerStatus.Running;
+            }
+        }
+
         private void EndTest()
         {
             TestRunning = false;
@@ -74,27 +152,6 @@ namespace UsbSwitcher.ViewModel
             TestSuccess = true;
             EndTest();
         }
-
-        public SupportState BasicSupportState { get; set; }
-
-        public SupportState EhciControllersState { get; set; }
-
-        public int SwitchablePorts { get; set; }
-
-        public bool? IsRunningOn30 { get; set; }
-        public bool CanTest { get; set; }
-        public bool TestRunning { get; set; }
-        public bool TestSuccess { get; set; }
-        public int TestCountdown { get; set; }
-
-        public bool ServiceEnabled { get; set; }
-
-        public bool? ServiceRunning { get; set; }
-
-        public ICommand TestCommand { get; }
-        public ICommand FinishTestCommand { get; }
-        public ICommand EnableServiceCommand { get; }
-        public ICommand DisableServiceCommand { get; }
 
         private async void Initialize()
         {
@@ -112,6 +169,26 @@ namespace UsbSwitcher.ViewModel
             IsRunningOn30 = state.IsRunningOn30;
             ServiceRunning = state.ServiceRunning;
             ServiceEnabled = state.ServiceEnabled;
+        }
+        
+        private static bool GetServiceEnabled(string serviceName)
+        {
+            using (var querySearch = new ManagementObjectSearcher($"SELECT StartMode FROM Win32_Service WHERE Name = '{serviceName}'"))
+            {
+                var service = querySearch.Get().Cast<ManagementBaseObject>().FirstOrDefault();
+
+                if (service == null) return false;
+
+                return service.GetPropertyValue("StartMode").ToString() == "Automatic";
+            }
+        }
+
+        private static void SetServiceEnabled(string serviceName, bool enabled)
+        {
+            using (var m = new ManagementObject($"Win32_Service.Name='{serviceName}'"))
+            {
+                m.InvokeMethod("ChangeStartMode", new object[] { enabled ? "Automatic" : "Disabled" });
+            }
         }
 
         private class Status
@@ -152,18 +229,7 @@ namespace UsbSwitcher.ViewModel
                     ServiceRunning = service.Status == ServiceControllerStatus.Running;
                 }
 
-                ServiceEnabled = CheckServiceEnabled(_serviceName);
-            }
-
-            private bool CheckServiceEnabled(string serviceName)
-            {
-                var querySearch = new ManagementObjectSearcher($"SELECT StartMode FROM Win32_Service WHERE Name = '{serviceName}'");
-
-                var service = querySearch.Get().Cast<ManagementBaseObject>().FirstOrDefault();
-
-                if (service == null) return false;
-
-                return service.GetPropertyValue("StartMode").ToString() == "Automatic";
+                ServiceEnabled = GetServiceEnabled(_serviceName);
             }
         }
     }
