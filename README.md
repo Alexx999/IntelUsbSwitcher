@@ -17,4 +17,11 @@ Supported OS:
 
 On Windows 7 requires [.NET 4.5](http://go.microsoft.com/fwlink/p/?LinkId=245484) to run.
 
-To use this tool - [install](https://github.com/Alexx999/IntelUsbSwitcher/releases), launch "Intel USB Switcher" app, run test to ensure that your system is compatible and click confirmation button if your input works. Then click "Enable service" to have this applied on system startup.
+To use this tool:
+* Switch xHCI in BIOS to "Smart Auto" (otherwise 2.0 ports will be disabled completely when using this tool)
+* [Download](https://github.com/Alexx999/IntelUsbSwitcher/releases) MSI file and install
+* Launch "Intel USB Switcher" app
+* Click "Test" to ensure that your system is compatible and click confirmation button (in case your mouse and keyboard stop working)
+* Click "Enable service" to have this applied on system startup
+
+To remove simply uninstall application.
