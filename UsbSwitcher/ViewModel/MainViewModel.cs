@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using UsbSwitcher.Core;
 using System.ServiceProcess;
 using System.Management;
+using System.Configuration.Install;
 
 namespace UsbSwitcher.ViewModel
 {
@@ -224,12 +225,31 @@ namespace UsbSwitcher.ViewModel
 
                 var service = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == _serviceName);
 
+                if (service == null)
+                {
+                    InstallService();
+                }
+
+                service = ServiceController.GetServices().FirstOrDefault(s => s.ServiceName == _serviceName);
+
                 if (service != null)
                 {
                     ServiceRunning = service.Status == ServiceControllerStatus.Running;
                 }
 
                 ServiceEnabled = GetServiceEnabled(_serviceName);
+            }
+
+            private void InstallService()
+            {
+                var executablePath = "UsbSwitcher.Service.exe";
+                ManagedInstallerClass.InstallHelper(new string[] { executablePath });
+            }
+
+            private void UninstallService()
+            {
+                var executablePath = "UsbSwitcher.Service.exe";
+                ManagedInstallerClass.InstallHelper(new string[] { "/u", executablePath });
             }
         }
     }

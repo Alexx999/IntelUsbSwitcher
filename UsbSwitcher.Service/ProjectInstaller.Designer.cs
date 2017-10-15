@@ -39,6 +39,7 @@
             // 
             // serviceInstaller
             // 
+            this.serviceInstaller.Description = "Switches USB 2.0 ports to EHCI controller on supported platforms";
             this.serviceInstaller.ServiceName = "Intel USB Switcher Service";
             this.serviceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Disabled;
             // 

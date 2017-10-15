@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-	<Product Id="*" Name="Setup" Language="1033" Version="1.0.0.0" Manufacturer="Alexander Vostres" UpgradeCode="34de14c7-2f68-41a2-a955-1fe7aecfbd1a">
+	<Product Id="*" Name="Intel USB Switcher" Language="1033" Version="1.0.0.0" Manufacturer="Alexander Vostres" UpgradeCode="34de14c7-2f68-41a2-a955-1fe7aecfbd1a">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     
 	  <Media Id="1" Cabinet="myapplication.cab" EmbedCab="yes" />
     
-		<Feature Id="ProductFeature" Title="Setup" Level="1">
+		<Feature Id="ProductFeature" Title="Intel USB Switcher" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
 		</Feature>
 	</Product>
@@ -19,6 +19,7 @@
 	  </Condition>
     
 		<Directory Id="TARGETDIR" Name="SourceDir">
+		  <Directory Id="ProgramMenuFolder" />
 			<Directory Id="ProgramFilesFolder">
 				<Directory Id="INSTALLFOLDER" Name="Setup" />
 			</Directory>
@@ -32,13 +33,21 @@
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
 			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
 			<Component Id="UsbSwitcher">
-				<File Source="$(var.UsbSwitcher.TargetPath)" KeyPath="yes" />
+        <File Source="$(var.UsbSwitcher.TargetPath)" KeyPath="yes">
+          <Shortcut
+            Id="ApplicationStartMenuShortcut"
+            Directory="ProgramMenuFolder"
+            Name="Intel Usb Switcher"
+            Icon="UsbSwitcher.ico"
+            WorkingDirectory="INSTALLFOLDER" Advertise="yes"/>
+        </File>
 			</Component>
 			<Component Id="UsbSwitcherConfig">
 				<File Source="$(var.UsbSwitcher.TargetPath).config" KeyPath="yes" />
 			</Component>
 			<Component Id="UsbSwitcherService">
 			  <File Source="$(var.UsbSwitcher.Service.TargetPath)" KeyPath="yes" />
+			  <ServiceControl Id="StartService" Stop="both" Remove="uninstall" Name="Intel USB Switcher Service" Wait="yes" />
 			</Component>
 			<Component Id="UsbSwitcherServiceConfig">
 			  <File Source="$(var.UsbSwitcher.Service.TargetPath).config" KeyPath="yes" />
