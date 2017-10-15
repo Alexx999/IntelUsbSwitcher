@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Setup" Language="1033" Version="1.0.0.0" Manufacturer="Alexander Vostres" UpgradeCode="34de14c7-2f68-41a2-a955-1fe7aecfbd1a">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    
+	  <Media Id="1" Cabinet="myapplication.cab" EmbedCab="yes" />
+    
+		<Feature Id="ProductFeature" Title="Setup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Setup" />
+			</Directory>
+		</Directory>
+    
+	  <Icon Id="UsbSwitcher.ico" SourceFile="$(var.UsbSwitcher.ProjectDir)UsbSwitcher.ico"/>
+	  <Property Id="ARPPRODUCTICON" Value="UsbSwitcher.ico" />
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<Component Id="UsbSwitcher">
+				<File Source="$(var.UsbSwitcher.TargetPath)" KeyPath="yes" />
+			</Component>
+			<Component Id="UsbSwitcherConfig">
+				<File Source="$(var.UsbSwitcher.TargetPath).config" KeyPath="yes" />
+			</Component>
+			<Component Id="UsbSwitcherService">
+			  <File Source="$(var.UsbSwitcher.Service.TargetPath)" KeyPath="yes" />
+			</Component>
+			<Component Id="UsbSwitcherServiceConfig">
+			  <File Source="$(var.UsbSwitcher.Service.TargetPath).config" KeyPath="yes" />
+			</Component>
+			<Component Id="UsbSwitcherCore">
+			  <File Source="$(var.UsbSwitcher.Core.TargetPath)" KeyPath="yes" />
+			</Component>
+			<Component Id="MvvmLight">
+			  <File Source="$(var.UsbSwitcher.TargetDir)GalaSoft.MvvmLight.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="MvvmLightExtras">
+			  <File Source="$(var.UsbSwitcher.TargetDir)GalaSoft.MvvmLight.Extras.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="MvvmLightPlatform">
+			  <File Source="$(var.UsbSwitcher.TargetDir)GalaSoft.MvvmLight.Platform.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="ServiceLocation">
+			  <File Source="$(var.UsbSwitcher.TargetDir)Microsoft.Practices.ServiceLocation.dll" KeyPath="yes" />
+			</Component>
+			<Component Id="Interactivity">
+			  <File Source="$(var.UsbSwitcher.TargetDir)System.Windows.Interactivity.dll" KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsbSwitcher", "UsbSwitcher\UsbSwitcher.csproj", "{FFEAE485-1B3F-4BA4-A3E2-99A9EDC4F17C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsbSwitcher.Core", "UsbSwitcher.Core\UsbSwitcher.Core.csproj", "{078AB985-9562-46DD-BD7F-40010DC1729B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsbSwitcher.Service", "UsbSwitcher.Service\UsbSwitcher.Service.csproj", "{9EB35E2D-EEF8-47B7-BF78-E828BFE833EC}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixproj", "{D56FB569-671C-47C3-9EF3-845BE98D09DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFEAE485-1B3F-4BA4-A3E2-99A9EDC4F17C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFEAE485-1B3F-4BA4-A3E2-99A9EDC4F17C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFEAE485-1B3F-4BA4-A3E2-99A9EDC4F17C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FFEAE485-1B3F-4BA4-A3E2-99A9EDC4F17C}.Debug|x86.Build.0 = Debug|Any CPU
+		{FFEAE485-1B3F-4BA4-A3E2-99A9EDC4F17C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFEAE485-1B3F-4BA4-A3E2-99A9EDC4F17C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFEAE485-1B3F-4BA4-A3E2-99A9EDC4F17C}.Release|x86.ActiveCfg = Release|Any CPU
+		{FFEAE485-1B3F-4BA4-A3E2-99A9EDC4F17C}.Release|x86.Build.0 = Release|Any CPU
+		{078AB985-9562-46DD-BD7F-40010DC1729B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{078AB985-9562-46DD-BD7F-40010DC1729B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{078AB985-9562-46DD-BD7F-40010DC1729B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{078AB985-9562-46DD-BD7F-40010DC1729B}.Debug|x86.Build.0 = Debug|Any CPU
+		{078AB985-9562-46DD-BD7F-40010DC1729B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{078AB985-9562-46DD-BD7F-40010DC1729B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{078AB985-9562-46DD-BD7F-40010DC1729B}.Release|x86.ActiveCfg = Release|Any CPU
+		{078AB985-9562-46DD-BD7F-40010DC1729B}.Release|x86.Build.0 = Release|Any CPU
+		{9EB35E2D-EEF8-47B7-BF78-E828BFE833EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EB35E2D-EEF8-47B7-BF78-E828BFE833EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EB35E2D-EEF8-47B7-BF78-E828BFE833EC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9EB35E2D-EEF8-47B7-BF78-E828BFE833EC}.Debug|x86.Build.0 = Debug|Any CPU
+		{9EB35E2D-EEF8-47B7-BF78-E828BFE833EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EB35E2D-EEF8-47B7-BF78-E828BFE833EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EB35E2D-EEF8-47B7-BF78-E828BFE833EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{9EB35E2D-EEF8-47B7-BF78-E828BFE833EC}.Release|x86.Build.0 = Release|Any CPU
+		{D56FB569-671C-47C3-9EF3-845BE98D09DD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D56FB569-671C-47C3-9EF3-845BE98D09DD}.Debug|x86.ActiveCfg = Debug|x86
+		{D56FB569-671C-47C3-9EF3-845BE98D09DD}.Debug|x86.Build.0 = Debug|x86
+		{D56FB569-671C-47C3-9EF3-845BE98D09DD}.Release|Any CPU.ActiveCfg = Release|x86
+		{D56FB569-671C-47C3-9EF3-845BE98D09DD}.Release|x86.ActiveCfg = Release|x86
+		{D56FB569-671C-47C3-9EF3-845BE98D09DD}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {08D84782-64B9-47D2-B71F-8884447FD778}
+	EndGlobalSection
+EndGlobal

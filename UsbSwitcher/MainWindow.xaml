@@ -1,0 +1,61 @@
+﻿<Window x:Class="UsbSwitcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converter="clr-namespace:UsbSwitcher.Converter"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="550"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+    <Window.Resources>
+        <converter:SupportStateToColorConverter x:Key="SupportStateToColorConverter"/>
+        <converter:SupportStateToDescriptionConverter x:Key="SupportStateToDescriptionConverter"/>
+        <converter:BoolToUsbVersionConverter x:Key="BoolToUsbVersionConverter"/>
+        <converter:BoolToServiceStateConverter x:Key="BoolToServiceStateConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Orientation="Vertical">
+            <TextBlock Text="Platform Status"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Ellipse Width="10" Height="10" Fill="{Binding BasicSupportState, Converter={StaticResource SupportStateToColorConverter}}"/>
+                <TextBlock Text="{Binding BasicSupportState, Converter={StaticResource SupportStateToDescriptionConverter}}" TextWrapping="Wrap" MaxWidth="170" Margin="5 0 0 0"/>
+            </StackPanel>
+            <TextBlock Text="USB 2.0 Controller Status"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Ellipse Width="10" Height="10" Fill="{Binding EhciControllersState, Converter={StaticResource SupportStateToColorConverter}}"/>
+                <TextBlock Text="{Binding EhciControllersState, Converter={StaticResource SupportStateToDescriptionConverter}}" TextWrapping="Wrap" MaxWidth="170" Margin="5 0 0 0"/>
+            </StackPanel>
+            <TextBlock Text="Switchable ports"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding SwitchablePorts}"/>
+            </StackPanel>
+            <TextBlock Text="Currently used controller"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding IsRunningOn30, Converter={StaticResource BoolToUsbVersionConverter}}"/>
+            </StackPanel>
+            <Button Command="{Binding TestCommand}" Content="Test" Visibility="{Binding CanTest, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <Button Command="{Binding FinishTestCommand}" Content="Click me if you can!" Visibility="{Binding TestRunning, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBlock Visibility="{Binding TestRunning, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Run Text="Remaining time to click button:"/>
+                        <Run Text="{Binding TestCountdown}"/>
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <TextBlock Text="Service Status"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock Text="{Binding ServiceRunning, Converter={StaticResource BoolToServiceStateConverter}}" />
+            </StackPanel>
+            <Button Content="Stop service" Visibility="{Binding ServiceRunning, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <StackPanel Orientation="Vertical">
+                
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
